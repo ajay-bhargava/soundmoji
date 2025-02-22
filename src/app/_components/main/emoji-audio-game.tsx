@@ -11,7 +11,7 @@ import type { Sound } from "~/app/_types/types";
 import { Progress } from "~/components/ui/progress";
 
 export function EmojiAudioGame() {
-	const [currentAudioUrl, setCurrentAudioUrl] = useState<string | null>(null);
+	const [currentSound, setCurrentSound] = useState<Sound | null>(null);
 	const {
 		selectedEmojis,
 		discoveredSounds,
@@ -28,7 +28,7 @@ export function EmojiAudioGame() {
 		if (discoveredSounds.length > 0) {
 			const latestSound = discoveredSounds[discoveredSounds.length - 1];
 			if (latestSound?.audioUrl) {
-				setCurrentAudioUrl(latestSound.audioUrl);
+				setCurrentSound(latestSound);
 			}
 		}
 	}, [discoveredSounds]);
@@ -36,7 +36,7 @@ export function EmojiAudioGame() {
 	// Handle playing a specific sound from the drawer
 	const handlePlay = (sound: Sound) => {
 		if (sound.audioUrl) {
-			setCurrentAudioUrl(sound.audioUrl);
+			setCurrentSound(sound);
 		}
 	};
 
@@ -50,12 +50,12 @@ export function EmojiAudioGame() {
 						onClearAll={handleClearAll}
 						onSubmit={handleGPTSubmit}
 					/>
-					<SoundDrawer sounds={discoveredSounds} onPlaySound={handlePlay} />
+					<SoundDrawer sounds={discoveredSounds} onPlaySound={handlePlaySound} />
 				</div>
 				{progress > 0 && <Progress value={progress} className="h-1" />}
 			</div>
 
-			{currentAudioUrl && <SoundVisualizer audioUrl={currentAudioUrl} />}
+			{currentSound?.audioUrl && (<SoundVisualizer audioUrl={currentSound.audioUrl} emoji={currentSound.emoji} />)}
 
 			<EmojiSelector onEmojiSelect={handleEmojiClick} />
 		</Card>

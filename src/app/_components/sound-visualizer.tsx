@@ -3,10 +3,11 @@ import AudioMotionAnalyzer from 'audiomotion-analyzer';
 
 interface AudioVisualizerProps {
 	audioUrl: string;
+	emoji: string;
 	className?: string;
 }
 
-const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ audioUrl, className }) => {
+const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ audioUrl, emoji, className }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const audioRef = useRef<HTMLAudioElement>(null);
 	const analyzerRef = useRef<AudioMotionAnalyzer | null>(null);
@@ -17,7 +18,7 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ audioUrl, className }
 	// Set up audio source when URL changes
 	useEffect(() => {
 		if (!audioRef.current) return;
-		
+
 		audioRef.current.src = audioUrl;
 		audioRef.current.crossOrigin = "anonymous";
 		setIsInitialized(false); // Reset for new audio
@@ -63,7 +64,7 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ audioUrl, className }
 		try {
 			const audioCtx = new AudioContext();
 			const source = audioCtx.createMediaElementSource(audioRef.current);
-			
+
 			analyzerRef.current = new AudioMotionAnalyzer(containerRef.current, {
 				source: source,
 				audioCtx: audioCtx,
@@ -107,9 +108,15 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ audioUrl, className }
 	return (
 		<div className={className}>
 			{error && <div className="text-red-500 mb-4">{error}</div>}
-			<div className="text-center text-sm text-muted-foreground mb-4">
-				Press <kbd className="px-2 py-1 bg-muted rounded">Space</kbd> to {isPlaying ? 'pause' : 'play'}
+
+			<div className="flex flex-col items-center gap-2 mb-4">
+				<div className="text-3xl">{emoji}</div>
+				<div className="text-center text-sm text-muted-foreground">
+					Press <kbd className="px-2 py-1 bg-muted rounded">Space</kbd> to {isPlaying ? 'pause' : 'play'}
+				</div>
 			</div>
+
+
 			<audio ref={audioRef} />
 			<div
 				ref={containerRef}
