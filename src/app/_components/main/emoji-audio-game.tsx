@@ -33,13 +33,6 @@ export function EmojiAudioGame() {
 		}
 	}, [discoveredSounds]);
 
-	// Handle playing a specific sound from the drawer
-	const handlePlay = (sound: Sound) => {
-		if (sound.audioUrl) {
-			setCurrentSound(sound);
-		}
-	};
-
 	return (
 		<Card className="mx-auto max-w-2xl space-y-6 p-6">
 			<div className="flex flex-col gap-4">
@@ -50,12 +43,20 @@ export function EmojiAudioGame() {
 						onClearAll={handleClearAll}
 						onSubmit={handleGPTSubmit}
 					/>
-					<SoundDrawer sounds={discoveredSounds} onPlaySound={handlePlaySound} />
+					<SoundDrawer
+						sounds={discoveredSounds}
+						onPlaySound={handlePlaySound}
+					/>
 				</div>
 				{progress > 0 && <Progress value={progress} className="h-1" />}
 			</div>
 
-			{currentSound?.audioUrl && (<SoundVisualizer audioUrl={currentSound.audioUrl} emoji={currentSound.emoji} />)}
+			{currentSound?.audioUrl && (
+				<SoundVisualizer
+					audioUrl={currentSound.audioUrl}
+					emoji={currentSound.emoji}
+				/>
+			)}
 
 			<EmojiSelector onEmojiSelect={handleEmojiClick} />
 		</Card>

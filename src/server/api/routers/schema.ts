@@ -1,5 +1,5 @@
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import { eq, isNotNull, desc, asc } from "drizzle-orm";
+import { eq, isNotNull, asc } from "drizzle-orm";
 import { emojiRequests, textConversions, audioGeneration } from "~/server/db/schema";
 
 export const schemaRouter = createTRPCRouter({
