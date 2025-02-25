@@ -5,11 +5,40 @@ import { api } from "~/trpc/react";
 export function useEmojiSounds() {
 	const [selectedEmojis, setSelectedEmojis] = useState<string[]>([]);
 	const [progress, setProgress] = useState<number>(0);
-	const { data: discoveredSounds = [] } = api.schema.getSounds.useQuery();
+	
+	// Set up the TRPC utils for invalidation
+	const utils = api.useUtils();
+	
+	// Use refetch interval to periodically check for new sounds
+	const { data: discoveredSounds = [] } = api.schema.getSounds.useQuery(
+		undefined, 
+		{
+			// Refetch every 3 seconds and when window regains focus
+			refetchInterval: 3000,
+			refetchOnWindowFocus: true,
+		}
+	);
 
-	const createEmojiRequest = api.emoji.create.useMutation();
-	const createTextConversion = api.text.create.useMutation();
-	const createAudioGeneration = api.audio.createAudioGeneration.useMutation();
+	const createEmojiRequest = api.emoji.create.useMutation({
+		// Invalidate the sounds query when a new emoji request is created
+		onSuccess: () => {
+			utils.schema.getSounds.invalidate();
+		},
+	});
+	
+	const createTextConversion = api.text.create.useMutation({
+		// Invalidate the sounds query when a new text conversion is created
+		onSuccess: () => {
+			utils.schema.getSounds.invalidate();
+		},
+	});
+	
+	const createAudioGeneration = api.audio.createAudioGeneration.useMutation({
+		// Invalidate the sounds query when a new audio generation is created
+		onSuccess: () => {
+			utils.schema.getSounds.invalidate();
+		},
+	});
 
 	const handleEmojiClick = useCallback((emoji: string) => {
 		setSelectedEmojis((prev) => [...prev, emoji]);
@@ -97,6 +126,9 @@ export function useEmojiSounds() {
 				throw new Error("Failed to create audio generation");
 			}
 
+			// Manually trigger a refetch to ensure we have the latest data
+			void utils.schema.getSounds.invalidate();
+			
 			// Reset progress after a delay
 			setTimeout(() => setProgress(0), 1000);
 
@@ -104,7 +136,7 @@ export function useEmojiSounds() {
 			console.error("Error creating audio generation:", error);
 			setProgress(0);
 		}
-	}, [selectedEmojis, createEmojiRequest, createTextConversion, createAudioGeneration]);
+	}, [selectedEmojis, createEmojiRequest, createTextConversion, createAudioGeneration, utils.schema.getSounds]);
 
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
