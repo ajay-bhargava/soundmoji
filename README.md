@@ -4,30 +4,6 @@
 
 This is a simple game where you can select multiple emojis and generate a sound from that.
 
-## Tasks
-
-### Completed
-- [x] UI layer for selecting emojis to send to the tRPC API route
-
-### In Progress
-- [X] Database Schema Design
-  - [X] Define types for emoji requests table
-  - [X] Define types for text conversions table
-  - [X] Define types for audio generations table
-
-### Todo
-- [X] Audio Generation Pipeline
-  - [X] Connect tRPC API route to Fal.ai
-  - [X] Implement audio generation from emoji input
-  - [X] Add error handling and retries
-- [X] Audio Visualization
-  - [X] Add waveform visualization
-  - [X] Add playback controls
-- [X] Storage Implementation
-  - [X] Set up Supabase storage
-  - [X] Implement audio file upload/retrieval
-  - [X] Add caching layer
-
 ## Flow
 
 ```mermaid
