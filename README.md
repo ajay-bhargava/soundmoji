@@ -1,4 +1,4 @@
-# Emoji Infinite Audio Game
+# SoundMoji 🎵
 
 ## Description
 
