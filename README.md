@@ -6,7 +6,7 @@ This is a simple game where you can select multiple emojis and generate a sound 
 
 ## How it works
 
-![[SoundMoji Demo](https://github.com/ajay-bhargava/soundmoji/blob/main/docs/Soundmoji.gif)
+![](https://github.com/ajay-bhargava/soundmoji/blob/main/docs/Soundmoji.gif)
 
 ## Flow
 
