@@ -4,6 +4,10 @@
 
 This is a simple game where you can select multiple emojis and generate a sound from that.
 
+## How it works
+
+![SoundMoji Demo](Soundmoji.gif)
+
 ## Flow
 
 ```mermaid
